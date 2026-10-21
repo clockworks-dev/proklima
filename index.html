@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digitalni kutak</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="extra.css">
+  <style>
+    :root {
+      --bg: #f8f8ff;
+      --surface: rgba(255, 255, 255, 0.72);
+      --surface-strong: rgba(255, 255, 255, 0.9);
+      --text: #202b36;
+      --muted: #7d6078;
+      --line: rgba(57, 43, 89, 0.12);
+      --primary: #482de1d0;
+      --primary-2: #9eaef55b;
+      --accent: #ffbf69;
+      --success: #2a8f7b;
+      --shadow: 0 24px 60px rgba(66, 80, 117, 0.16);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --space: clamp(16px, 2vw, 24px);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Manrope', sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 20%, rgba(79, 141, 217, 0.18), transparent 24%),
+        radial-gradient(circle at 85% 15%, rgba(75, 120, 232, 0.2), transparent 20%),
+        radial-gradient(circle at 75% 80%, rgba(90, 170, 245, 0.18), transparent 18%),
+        linear-gradient(180deg, #f7f9ff 0%, #eff7ff 45%, #f5fbff 100%);
+      overflow-x: hidden;
+    }
+
+    .grain,
+    .glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .grain {
+      opacity: 0.08;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.45'/%3E%3C/svg%3E");
+    }
+
+    .glow {
+      background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.45), transparent 45%);
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 48px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(28px, 4vw, 52px);
+      border: 1px solid var(--line);
+      border-radius: 36px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.58));
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+      isolation: isolate;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(10px);
+      z-index: -1;
+    }
+
+    .hero::before {
+      width: 280px;
+      height: 280px;
+      top: -120px;
+      right: -60px;
+      background: rgba(64, 10, 226, 0.326);
+    }
+
+    .hero::after {
+      width: 220px;
+      height: 220px;
+      left: -70px;
+      bottom: -90px;
+      background: rgba(107, 147, 232, 0.15);
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.84);
+      border: 1px solid rgba(217, 79, 145, 0.16);
+      color: var(--primary);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+    }
+
+    .theme-note {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid var(--line);
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 11ch;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 7vw, 5.8rem);
+      line-height: 0.92;
+      letter-spacing: -0.03em;
+    }
+
+    .lead {
+      margin: 18px 0 0;
+      max-width: 62ch;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 1.8vw, 1.24rem);
+      line-height: 1.8;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 24px;
+      align-items: end;
+      margin-top: 28px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .stat {
+      padding: 18px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(89, 43, 82, 0.08);
+      box-shadow: 0 10px 24px rgba(117, 66, 113, 0.08);
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.8rem;
+      margin-bottom: 6px;
+      color: var(--primary);
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    .mini-card {
+      align-self: stretch;
+      padding: 22px;
+      border-radius: 28px;
+      background: linear-gradient(160deg, rgba(217, 79, 145, 0.12), rgba(143, 107, 232, 0.08));
+      border: 1px solid rgba(217, 79, 145, 0.12);
+    }
+
+    .mini-card h2 {
+      margin: 0 0 10px;
+      font-size: 1.15rem;
+    }
+
+    .mini-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .section {
+      margin-top: 28px;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(1.5rem, 2vw, 2rem);
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 58ch;
+      line-height: 1.7;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 320px;
+      padding: 24px;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--line);
+      background: var(--surface-strong);
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow);
+      text-decoration: none;
+      color: inherit;
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .card:hover,
+    .card:focus-visible {
+      transform: translateY(-5px);
+      box-shadow: 0 28px 60px rgba(117, 66, 113, 0.2);
+      border-color: rgba(217, 79, 145, 0.28);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: auto -40px -60px auto;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.9), transparent 68%);
+      opacity: 0.9;
+    }
+
+    .card--blue {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(228, 245, 255, 0.92));
+    }
+
+    .card--pink {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(255, 233, 245, 0.95));
+    }
+
+    .card--blue-dark {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(0, 158, 249, 0.35));
+
+      &::before {
+        opacity: 0.5;
+      }
+    }
+
+    .card--red-dark {
+      background: linear-gradient(145deg, rgba(191, 33, 27, 0.35), rgba(226, 65, 51, 0.15));
+    }
+
+    .card--orange {
+      background: linear-gradient(145deg, rgba(191, 114, 27, 0.35), rgba(226, 159, 51, 0.1));
+    }
+
+    .card--yellow {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(243, 181, 60, .25));
+    }
+
+    .card--green {
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(62, 139, 135, 0.25));
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .icon-wrap {
+      width: 68px;
+      height: 68px;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(89, 43, 82, 0.08);
+      box-shadow: 0 12px 28px rgba(117, 66, 113, 0.08);
+      flex-shrink: 0;
+    }
+
+    .tag {
+      padding: 9px 14px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: white;
+      background: linear-gradient(120deg, var(--primary), var(--primary-2));
+      box-shadow: 0 12px 24px rgba(143, 107, 232, 0.22);
+    }
+
+    .card h3 {
+      margin: 22px 0 10px;
+      font-size: clamp(1.55rem, 2vw, 2rem);
+      line-height: 1.08;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 46ch;
+    }
+
+    .highlights {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .chip {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(89, 43, 82, 0.08);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.93rem;
+    }
+
+    .cta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: auto;
+      padding-top: 28px;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 20px;
+      border-radius: 999px;
+      background: var(--text);
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 14px 28px rgba(54, 32, 51, 0.18);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    .notes {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .note {
+      padding: 22px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.76);
+      border: 1px solid var(--line);
+    }
+
+    .note h3 {
+      margin: 0 0 10px;
+      font-size: 1.08rem;
+    }
+
+    .note p,
+    .note li {
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .note ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    footer {
+      margin-top: 24px;
+      padding: 18px 4px 4px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    .sparkles {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      color: var(--success);
+    }
+
+    .skip-link {
+      position: absolute;
+      left: 12px;
+      top: -48px;
+      background: #fff;
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 12px;
+      z-index: 10;
+    }
+
+    .skip-link:focus {
+      top: 12px;
+    }
+
+    @media (max-width: 900px) {
+
+      .hero-grid,
+      .cards,
+      .notes {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        width: min(100% - 18px, 1180px);
+        padding-top: 12px;
+      }
+
+      .hero,
+      .card,
+      .note {
+        border-radius: 24px;
+      }
+
+      .hero-top,
+      .section-head,
+      .cta-row,
+      .card-top {
+        align-items: flex-start;
+      }
+
+      .cta-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .cta {
+        justify-content: center;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#sadrzaj">Preskoči na sadržaj</a>
+  <div class="grain"></div>
+  <div class="glow"></div>
+
+  <main class="page" id="sadrzaj">
+    <section class="hero" aria-labelledby="naslov-stranice">
+      <div class="hero-top">
+        <div>
+
+        </div>
+        <div class="theme-note">Digitalni materijali za učenje, ponavljanje i brzi pristup lekcijama</div>
+      </div>
+
+      <h1 id="naslov-stranice">Digitalni kutak</h1>
+      <p class="lead">
+        Ovdje se nalaze poveznice prema nastavnim materijalima koje možete otvoriti jednim klikom.
+        Stranica je osmišljena da vam olakša snalaženje, ponavljanje sadržaja i samostalno učenje kroz pregledne i
+        vizualno privlačne cjeline.
+      </p>
+
+      <div class="hero-grid">
+        <div class="stats" aria-label="Brzi pregled materijala">
+          <div class="stat">
+            <strong>1</strong>
+            <span>Cjeline spremne za otvaranje i rad.</span>
+          </div>
+          <div class="stat">
+            <strong>1 klik</strong>
+            <span>Do željenog sadržaja bez traženja po mapama.</span>
+          </div>
+          <div class="stat">
+            <strong>100%</strong>
+            <span>Fokus na jasne upute, sigurnost i preglednost.</span>
+          </div>
+        </div>
+
+        <aside class="mini-card" aria-label="Napomena za učenike">
+          <h2>Kako koristiti?</h2>
+          <p>
+            Najprije odaberite temu koja vas zanima. Zatim otvorite materijal, prođite slajdove i izdvojite ključne
+            pojmove.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="materijali">
+      <div class="section-head">
+        <div>
+          <h2 id="materijali">Materijali</h2>
+          <p>Odaberite karticu i otvorite pripremljeni sadržaj. Teme su prilagođene razumijevanju digitalnog svijeta i
+            njegovoj primjeni.</p>
+        </div>
+        <div class="sparkles">● Uči jasno ● Kreći se brzo ● Istražuj samostalno</div>
+      </div>
+
+      <div class="cards">
+        <a class="card card--orange" href="./html5.html" target="_blank" rel="noopener noreferrer"
+          aria-label="Otvori materijal Sklopovlje računala">
+          <div class="card-top">
+            <div class="icon-wrap" aria-hidden="true">
+              <svg viewBox="0 0 32 32" width="40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                  <path d="M6 28L4 3H28L26 28L16 31L6 28Z" fill="#E44D26"></path>
+                  <path d="M26 5H16V29.5L24 27L26 5Z" fill="#F16529"></path>
+                  <path
+                    d="M9.5 17.5L8.5 8H24L23.5 11H11.5L12 14.5H23L22 24L16 26L10 24L9.5 19H12.5L13 21.5L16 22.5L19 21.5L19.5 17.5H9.5Z"
+                    fill="white"></path>
+                </g>
+              </svg>
+            </div>
+            <span class="tag">Tema 1</span>
+          </div>
+
+          <h3>HTML5</h3>
+          <p>
+            Jezik za označavanje kojim opisujemo strukturu i sadržaj web-stranice.
+            Njime određujemo koji je dio sadržaja naslov, odlomak, slika, poveznica ili popis. Za razliku od programskih
+            jezika, HTML ne služi pisanju algoritama, nego organiziranju sadržaja koji preglednik prikazuje korisniku.
+            Pri izradi web-stranica često se koristi zajedno s CSS-om, koji određuje izgled i raspored elemenata, te
+            JavaScriptom, koji omogućuje interaktivnost i dinamičko ponašanje stranice.
+          </p>
+
+          <div class="highlights" aria-label="Ključne teme">
+            <span class="chip">HyperText Markup Language</span>
+            <span class="chip">Element</span>
+            <span class="chip">Semantički elementi</span>
+          </div>
+
+          <div class="cta-row">
+            <span class="cta">Otvori lekciju <span aria-hidden="true">→</span></span>
+            <span class="meta">Osnove HTML-a</span>
+          </div>
+        </a>
+
+        <!-- <a class="card card--red-dark" href="./maticna-procesor.html" target="_blank" rel="noopener noreferrer"
+          aria-label="Otvori materijal Internetski pretraživači i društvene mreže u poslovanju">
+          <div class="card-top">
+            <div class="icon-wrap" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40px" xmlns:xlink="http://www.w3.org/1999/xlink"
+                version="1.1" id="Layer_1" viewBox="0 0 512 512" enable-background="new 0 0 512 512"
+                xml:space="preserve" fill="#000000">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                  <g id="motherboard">
+                    <g>
+                      <rect y="58.672" fill="#4A89DC" width="512" height="426.656"></rect>
+                    </g>
+                    <g>
+                      <path fill="#434A54"
+                        d="M480,26.672c-5.875,0-10.656,4.766-10.656,10.656S474.125,48,480,48c5.906,0,10.672-4.781,10.672-10.672 S485.906,26.672,480,26.672z">
+                      </path>
+                      <path fill="#434A54"
+                        d="M309.344,26.672H288c-5.875,0-10.656,4.766-10.656,10.656S282.125,48,288,48h21.344 C315.234,48,320,43.219,320,37.328S315.234,26.672,309.344,26.672z">
+                      </path>
+                      <path fill="#434A54"
+                        d="M373.344,26.672H352c-5.875,0-10.656,4.766-10.656,10.656S346.125,48,352,48h21.344 C379.234,48,384,43.219,384,37.328S379.234,26.672,373.344,26.672z">
+                      </path>
+                      <path fill="#434A54"
+                        d="M437.344,26.672h-21.328c-5.891,0-10.672,4.766-10.672,10.656S410.125,48,416.016,48h21.328 c5.891,0,10.672-4.781,10.672-10.672S443.234,26.672,437.344,26.672z">
+                      </path>
+                    </g>
+                    <g>
+                      <rect y="37.328" fill="#5D9CEC" width="512" height="426.672"></rect>
+                    </g>
+                    <rect x="53.344" y="90.672" fill="#656D78" width="42.656" height="42.656"></rect>
+                    <path fill="#434A54" d="M42.672,80v64h64V80H42.672z M85.344,122.672H64v-21.344h21.344V122.672z">
+                    </path>
+                    <path fill="#E6E9ED"
+                      d="M85.344,410.672c-13.281,0-22.281-4.875-27.516-14.906c-4.344-8.281-4.484-17.062-4.484-17.156v-31.938H224 v64H85.344z">
+                    </path>
+                    <path fill="#CACFD7"
+                      d="M42.672,336v42.672c0,0,0,42.656,42.672,42.656c42.656,0,149.328,0,149.328,0V336H42.672z M213.344,400 h-128c-11.469,0-15.453-4.422-17.844-8.75c-2.688-4.891-3.422-10.797-3.5-12.766v-21.156h149.344V400z">
+                    </path>
+                    <g>
+                      <path fill="#434A54"
+                        d="M53.344,165.328c-5.891,0-10.672,4.781-10.672,10.672v128l0,0c0,5.891,4.781,10.672,10.672,10.672 S64,309.891,64,304l0,0V176C64,170.109,59.234,165.328,53.344,165.328z">
+                      </path>
+                      <path fill="#434A54"
+                        d="M96,165.328c-5.875,0-10.656,4.781-10.656,10.672v128l0,0c0,5.891,4.781,10.672,10.656,10.672 c5.906,0,10.672-4.781,10.672-10.672l0,0V176C106.672,170.109,101.906,165.328,96,165.328z">
+                      </path>
+                      <path fill="#434A54"
+                        d="M224,165.328c-5.875,0-10.656,4.781-10.656,10.672v128l0,0c0,5.891,4.781,10.672,10.656,10.672 c5.906,0,10.672-4.781,10.672-10.672l0,0V176C234.672,170.109,229.906,165.328,224,165.328z">
+                      </path>
+                      <path fill="#434A54"
+                        d="M181.344,165.328c-5.891,0-10.672,4.781-10.672,10.672v128l0,0c0,5.891,4.781,10.672,10.672,10.672 S192,309.891,192,304l0,0V176C192,170.109,187.234,165.328,181.344,165.328z">
+                      </path>
+                    </g>
+                    <g>
+                      <path fill="#434A54"
+                        d="M458.672,400L458.672,400h-192l0,0c-5.891,0-10.672,4.781-10.672,10.672s4.781,10.656,10.672,10.656l0,0 h192l0,0c5.891,0,10.672-4.766,10.672-10.656S464.562,400,458.672,400z">
+                      </path>
+                      <path fill="#434A54"
+                        d="M266.672,378.672L266.672,378.672h192l0,0c5.891,0,10.672-4.781,10.672-10.672 s-4.781-10.672-10.672-10.672l0,0h-192l0,0c-5.891,0-10.672,4.781-10.672,10.672S260.781,378.672,266.672,378.672z">
+                      </path>
+                    </g>
+                    <g>
+                      <path fill="#434A54"
+                        d="M458.672,122.672L458.672,122.672h-192l0,0c-5.891,0-10.672,4.766-10.672,10.656S260.781,144,266.672,144 l0,0h192l0,0c5.891,0,10.672-4.781,10.672-10.672S464.562,122.672,458.672,122.672z">
+                      </path>
+                      <path fill="#434A54"
+                        d="M266.672,101.328L266.672,101.328h192l0,0c5.891,0,10.672-4.766,10.672-10.656S464.562,80,458.672,80l0,0 h-192l0,0C260.781,80,256,84.781,256,90.672S260.781,101.328,266.672,101.328z">
+                      </path>
+                    </g>
+                    <rect x="458.672" y="176" fill="#E6E9ED" width="42.672" height="149.328"></rect>
+                    <path fill="#CACFD7"
+                      d="M448,165.328V336h64V165.328H448z M490.672,314.672h-21.328v-128h21.328V314.672z"></path>
+                    <path fill="#CACFD7"
+                      d="M490.672,208c0,5.891-4.766,10.672-10.672,10.672c-5.875,0-10.656-4.781-10.656-10.672 s4.781-10.672,10.656-10.672C485.906,197.328,490.672,202.109,490.672,208z">
+                    </path>
+                    <path fill="#CACFD7"
+                      d="M490.672,250.672c0,5.891-4.766,10.656-10.672,10.656c-5.875,0-10.656-4.766-10.656-10.656 S474.125,240,480,240C485.906,240,490.672,244.781,490.672,250.672z">
+                    </path>
+                    <path fill="#CACFD7"
+                      d="M490.672,293.328c0,5.891-4.766,10.672-10.672,10.672c-5.875,0-10.656-4.781-10.656-10.672 s4.781-10.656,10.656-10.656C485.906,282.672,490.672,287.438,490.672,293.328z">
+                    </path>
+                    <path fill="#4A89DC"
+                      d="M149.344,90.672c0,5.891-4.781,10.656-10.672,10.656S128,96.562,128,90.672S132.781,80,138.672,80 S149.344,84.781,149.344,90.672z">
+                    </path>
+                    <path fill="#4A89DC"
+                      d="M192,133.328c0,5.891-4.766,10.672-10.656,10.672s-10.672-4.781-10.672-10.672s4.781-10.656,10.672-10.656 S192,127.438,192,133.328z">
+                    </path>
+                    <path fill="#4A89DC"
+                      d="M170.672,112c0,5.891-4.766,10.672-10.672,10.672c-5.875,0-10.656-4.781-10.656-10.672 s4.781-10.672,10.656-10.672C165.906,101.328,170.672,106.109,170.672,112z">
+                    </path>
+                    <path fill="#4A89DC"
+                      d="M192,90.672c0,5.891-4.766,10.656-10.656,10.656s-10.672-4.766-10.672-10.656S175.453,80,181.344,80 S192,84.781,192,90.672z">
+                    </path>
+                    <path fill="#4A89DC"
+                      d="M149.344,133.328c0,5.891-4.781,10.672-10.672,10.672S128,139.219,128,133.328s4.781-10.656,10.672-10.656 S149.344,127.438,149.344,133.328z">
+                    </path>
+                    <path fill="#4A89DC"
+                      d="M234.672,133.328c0,5.891-4.766,10.672-10.672,10.672c-5.875,0-10.656-4.781-10.656-10.672 s4.781-10.656,10.656-10.656C229.906,122.672,234.672,127.438,234.672,133.328z">
+                    </path>
+                    <path fill="#4A89DC"
+                      d="M213.344,112c0,5.891-4.781,10.672-10.672,10.672S192,117.891,192,112s4.781-10.672,10.672-10.672 S213.344,106.109,213.344,112z">
+                    </path>
+                    <path fill="#4A89DC"
+                      d="M234.672,90.672c0,5.891-4.766,10.656-10.672,10.656c-5.875,0-10.656-4.766-10.656-10.656 S218.125,80,224,80C229.906,80,234.672,84.781,234.672,90.672z">
+                    </path>
+                    <path fill="#CACFD7"
+                      d="M181.344,368H96c-5.875,0-10.656,4.781-10.656,10.672S90.125,389.328,96,389.328h85.344 c5.891,0,10.656-4.766,10.656-10.656S187.234,368,181.344,368z">
+                    </path>
+                    <g>
+                      <rect x="266.672" y="176" fill="#CACFD7" width="149.328" height="149.328"></rect>
+                    </g>
+                    <g>
+                      <path fill="#4A89DC"
+                        d="M138.672,208c-5.891,0-10.672,4.781-10.672,10.672v42.656c0,5.891,4.781,10.672,10.672,10.672 s10.672-4.781,10.672-10.672v-42.656C149.344,212.781,144.562,208,138.672,208z">
+                      </path>
+                      <path fill="#4A89DC"
+                        d="M138.672,186.672c5.891,0,10.672-4.781,10.672-10.672s-4.781-10.672-10.672-10.672S128,170.109,128,176 S132.781,186.672,138.672,186.672z">
+                      </path>
+                      <path fill="#4A89DC"
+                        d="M138.672,293.328c-5.891,0-10.672,4.781-10.672,10.672s4.781,10.672,10.672,10.672 s10.672-4.781,10.672-10.672S144.562,293.328,138.672,293.328z">
+                      </path>
+                    </g>
+                    <path fill="#656D78"
+                      d="M341.344,325.328c-41.172,0-74.672-33.484-74.672-74.656S300.172,176,341.344,176S416,209.5,416,250.672 S382.516,325.328,341.344,325.328z">
+                    </path>
+                    <path fill="#434A54"
+                      d="M412.188,260.953l5.641-20.578c-0.578-0.156-14.234-3.859-30.688-5.75c-8.391-0.969-16-1.266-22.812-0.938 c9.859-9.859,23.625-19.703,34.391-25.844l-10.562-18.531c-0.516,0.297-12.797,7.328-25.781,17.625 c-6.625,5.266-12.219,10.438-16.812,15.5c0-4.516,0.297-9.516,0.906-14.875c1.656-14.766,5.078-27.422,5.156-27.75l0,0L341.344,177 l-10.297-2.812c-0.156,0.562-3.859,14.219-5.75,30.688c-0.953,8.391-1.266,16-0.938,22.797 c-9.859-9.844-19.703-23.625-25.844-34.375l-18.531,10.562c0.297,0.516,7.328,12.797,17.625,25.766 c5.266,6.625,10.438,12.234,15.5,16.812c-4.516,0.016-9.516-0.281-14.875-0.891c-14.875-1.688-27.625-5.141-27.75-5.172 l-2.812,10.297l2.828-10.297l-5.641,20.578c0.562,0.156,14.219,3.875,30.688,5.766c6.219,0.703,12.016,1.062,17.375,1.062 c1.859,0,3.672-0.047,5.422-0.125c-9.859,9.844-23.625,19.688-34.375,25.844l5.281,9.266l5.281,9.266 c0.516-0.297,12.797-7.328,25.766-17.641c6.625-5.25,12.234-10.422,16.812-15.484c0.016,4.516-0.281,9.5-0.891,14.875 c-1.688,14.859-5.125,27.609-5.172,27.734l20.578,5.641c0.156-0.578,3.875-14.234,5.766-30.688c0.953-8.391,1.266-16,0.938-22.812 c9.844,9.859,19.688,23.625,25.828,34.375l18.547-10.562c-0.297-0.516-7.328-12.797-17.641-25.766 c-5.25-6.625-10.422-12.219-15.484-16.812c4.516,0,9.5,0.297,14.875,0.906C399.328,257.469,412.062,260.922,412.188,260.953z">
+                    </path>
+                    <path fill="#CCD1D9"
+                      d="M341.344,272C329.578,272,320,262.438,320,250.672s9.578-21.344,21.344-21.344s21.328,9.578,21.328,21.344 S353.109,272,341.344,272z">
+                    </path>
+                    <path fill="#E6E9ED"
+                      d="M341.344,218.672c-17.672,0-32,14.328-32,32s14.328,32,32,32s32-14.328,32-32 S359.016,218.672,341.344,218.672z M341.344,261.328c-5.891,0-10.672-4.781-10.672-10.656c0-5.891,4.781-10.672,10.672-10.672 c5.875,0,10.656,4.781,10.656,10.672C352,256.547,347.219,261.328,341.344,261.328z">
+                    </path>
+                    <path fill="#434A54"
+                      d="M341.344,165.328c-47.125,0-85.344,38.203-85.344,85.344C256,297.797,294.219,336,341.344,336 s85.328-38.203,85.328-85.328C426.672,203.531,388.469,165.328,341.344,165.328z M341.344,314.672c-35.297,0-64-28.719-64-64 c0-35.297,28.703-64,64-64c35.281,0,64,28.703,64,64C405.344,285.953,376.625,314.672,341.344,314.672z">
+                    </path>
+                  </g>
+                </g>
+              </svg>
+            </div>
+            <span class="tag">Tema 2</span>
+          </div>
+
+          <h3>Matična ploča i Procesor</h3>
+          <p>
+            Matična ploča povezuje glavne dijelove računala i omogućuje njihovu međusobnu komunikaciju. Procesor
+            izvršava programske naredbe i obrađuje podatke, a njegove jezgre, predmemorija i radni takt utječu na način
+            rada. Pri odabiru dijelova važno je provjeriti jesu li procesor, matična ploča i memorija kompatibilni.
+            Pravilna ugradnja, hlađenje i zaštita od elektrostatičkog pražnjenja važni su za siguran rad računala.
+          </p>
+
+          <div class="highlights" aria-label="Ključne teme">
+            <span class="chip">Tiskana pločica</span>
+            <span class="chip">Utori</span>
+            <span class="chip">Jezgre</span>
+            <span class="chip">Dretve</span>
+          </div>
+
+          <div class="cta-row">
+            <span class="cta">Otvori lekciju <span aria-hidden="true">→</span></span>
+            <span class="meta">Uloga matične i procesora</span>
+          </div>
+        </a>
+
+        <a class="card card--yellow" href="./ulazno-izlazne.html" target="_blank" rel="noopener noreferrer"
+          aria-label="Otvori materijal Ulazno izlazne jedinice">
+          <div class="card-top">
+            <div class="icon-wrap" aria-hidden="true">
+              <svg viewBox="0 0 1024 1024" width="50px" class="icon" version="1.1" xmlns="http://www.w3.org/2000/svg" fill="#000000">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                  <path
+                    d="M225.1 251.9h592.7c14.2 0 25.8 11.5 25.8 25.8V690c0 14.2-11.5 25.8-25.8 25.8H225.1c-14.2 0-25.8-11.5-25.8-25.8V277.6c0-14.2 11.6-25.7 25.8-25.7z"
+                    fill="#FFFFFF"></path>
+                  <path
+                    d="M817.9 741.5H225.1c-28.4 0-51.5-23.1-51.5-51.5V277.6c0-28.4 23.1-51.5 51.5-51.5h592.7c28.4 0 51.5 23.1 51.5 51.5V690c0.1 28.4-23 51.5-51.4 51.5zM225.1 277.6V690h592.7V277.6H225.1z"
+                    fill="#2F2F33"></path>
+                  <path
+                    d="M379.7 544.1c-6 0-12.1-2.1-17-6.4-10.7-9.4-11.7-25.7-2.3-36.4l92.2-104.8c4.8-5.5 11.8-8.7 19.1-8.8 7.2 0.3 14.3 3 19.3 8.3l70.9 77.2L659.2 362c9.4-10.7 25.7-11.8 36.4-2.4s11.8 25.7 2.4 36.4L581.6 528.8c-4.8 5.5-11.8 8.7-19.1 8.8-7.1 0.1-14.3-2.9-19.3-8.3L472.3 452l-73.2 83.3c-5.1 5.8-12.2 8.8-19.4 8.8z"
+                    fill="#333333"></path>
+                  <path d="M225.1 638.4h592.7v51.5H225.1z" fill="#F4CE26"></path>
+                  <path d="M212.2 586.9h631.4v51.5H212.2z" fill="#303033"></path>
+                  <path
+                    d="M276.7 780.2h476.8c14.2 0 25.8 11.5 25.8 25.8 0 14.2-11.5 25.8-25.8 25.8H276.7c-14.2 0-25.8-11.5-25.8-25.8s11.5-25.8 25.8-25.8z"
+                    fill="#2F2F33"></path>
+                  <path d="M748.9 831.7H289.1L349.9 690h358.6l40.4 141.7z m-381.6-51.5h313.3l-11-38.7H383.8l-16.5 38.7z"
+                    fill="#2F2F33"></path>
+                </g>
+              </svg>
+            </div>
+            <span class="tag">Tema 3</span>
+          </div>
+
+          <h3>Ulazno izlazne jedinice</h3>
+          <p>
+            Ulazne jedinice, poput tipkovnice, miša i mikrofona, omogućuju unos podataka u računalo, dok izlazne
+            jedinice, poput monitora, pisača i zvučnika, prikazuju ili prenose rezultate obrade.
+            Monitori se razlikuju prema dijagonali, rezoluciji, gustoći piksela, dubini boje, vremenu odziva,
+            frekvenciji osvježavanja i svjetlini.
+          </p>
+
+          <div class="highlights" aria-label="Ključne teme">
+            <span class="chip">Slika</span>
+            <span class="chip">Zvuk</span>
+            <span class="chip">Snezor</span>
+            <span class="chip">Monitor</span>
+          </div>
+
+          <div class="cta-row">
+            <span class="cta">Otvori lekciju <span aria-hidden="true">→</span></span>
+            <span class="meta">Komunikacija sa računalom</span>
+          </div>
+        </a> -->
+
+        <!-- <a class="card card--yellow" href="./vrste-komunikacije.html" target="_blank" rel="noopener noreferrer"
+          aria-label="Otvori materijal Vrste elektroničke komunikacije">
+          <div class="card-top">
+            <div class="icon-wrap" aria-hidden="true">
+              <svg fill="rgba(243, 181, 60, .55)" width="34px" height="34px" viewBox="0 0 64 64" version="1.1"
+                xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                stroke="rgba(243, 181, 60, .55)" stroke-width="1.92">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                  <g id="smart_lamp"></g>
+                  <g id="e-wallet"></g>
+                  <g id="virtual_reality"></g>
+                  <g id="payment"></g>
+                  <g id="cloud_storage"></g>
+                  <g id="security_camera"></g>
+                  <g id="smart_home"></g>
+                  <g id="connection"></g>
+                  <g id="game"></g>
+                  <g id="drone"></g>
+                  <g id="smart_car"></g>
+                  <g id="camera"></g>
+                  <g id="online_business"></g>
+                  <g id="smartwatch"></g>
+                  <g id="online_shopping"></g>
+                  <g id="smart_Television"></g>
+                  <g id="security"></g>
+                  <g id="communication">
+                    <g>
+                      <path
+                        d="M35,30c2.2,0,4-1.8,4-4s-1.8-4-4-4c-2.2,0-4,1.8-4,4S32.8,30,35,30z M35,24c1.1,0,2,0.9,2,2s-0.9,2-2,2s-2-0.9-2-2 S33.9,24,35,24z">
+                      </path>
+                      <path
+                        d="M24,30c2.2,0,4-1.8,4-4s-1.8-4-4-4s-4,1.8-4,4S21.8,30,24,30z M24,24c1.1,0,2,0.9,2,2s-0.9,2-2,2s-2-0.9-2-2 S22.9,24,24,24z">
+                      </path>
+                      <path
+                        d="M13,22c-2.2,0-4,1.8-4,4s1.8,4,4,4s4-1.8,4-4S15.2,22,13,22z M13,28c-1.1,0-2-0.9-2-2s0.9-2,2-2s2,0.9,2,2S14.1,28,13,28z ">
+                      </path>
+                      <path
+                        d="M60.3,9.1c-0.4-0.1-0.8,0-1.1,0.3l-8.5,10.2C50,20.5,48.8,21,47.7,21H45v-6c0-3.3-2.7-6-6-6H9c-3.3,0-6,2.7-6,6v39 c0,0.4,0.3,0.8,0.7,0.9C3.8,55,3.9,55,4,55c0.3,0,0.6-0.1,0.8-0.4l8.5-10.2c0.8-0.9,1.9-1.4,3.1-1.4H19v6c0,3.3,2.7,6,6,6h30 c3.3,0,6-2.7,6-6V10C61,9.6,60.7,9.2,60.3,9.1z M11.7,43.2L5,51.2V15c0-2.2,1.8-4,4-4h30c2.2,0,4,1.8,4,4v22c0,2.2-1.8,4-4,4H16.3 C14.6,41,12.9,41.8,11.7,43.2z M59,49c0,2.2-1.8,4-4,4H25c-2.2,0-4-1.8-4-4v-6h18c3.3,0,6-2.7,6-6V23h2.7c1.8,0,3.5-0.8,4.6-2.2 l6.7-8.1V49z">
+                      </path>
+                      <path
+                        d="M47,38c0,2.2,1.8,4,4,4s4-1.8,4-4s-1.8-4-4-4S47,35.8,47,38z M53,38c0,1.1-0.9,2-2,2s-2-0.9-2-2s0.9-2,2-2S53,36.9,53,38z ">
+                      </path>
+                    </g>
+                  </g>
+                  <g id="remote_control"></g>
+                  <g id="satelite_dish"></g>
+                </g>
+              </svg>
+            </div>
+            <span class="tag">Tema 4</span>
+          </div>
+
+          <h3>Vrste elektroničke komunikacije</h3>
+          <p>
+            Materijal sadrži primjere pomoću kojih učenici upoznaju e-poštu, chat aplikacije, videopozive i alate
+            za timsku suradnju te razlikuju formalnu od neformalne komunikacije. Obrađuju se struktura poslovne
+            e-poruke, pravila poslovnog bontona, primjeren jezik i profesionalan ton u komunikaciji s klijentima i
+            suradnicima.
+          </p>
+
+          <div class="highlights" aria-label="Ključne teme">
+            <span class="chip">Eketronička komunikacija</span>
+            <span class="chip">Formalno / Neformalno</span>
+            <span class="chip">Pravila pisanja</span>
+            <span class="chip">Rizične poruke</span>
+          </div>
+
+          <div class="cta-row">
+            <span class="cta">Otvori lekciju <span aria-hidden="true">→</span></span>
+            <span class="meta">Komunikacija sa klijentima</span>
+          </div>
+        </a>
+
+        <a class="card card--red-dark" href="./posta.html" target="_blank" rel="noopener noreferrer"
+          aria-label="Otvori materijal Programi za oblikovanje i obradu teksta – MS Word">
+          <div class="card-top">
+            <div class="icon-wrap" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" width="34px" xmlns="http://www.w3.org/2000/svg">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                  <path d="M4 7.00005L10.2 11.65C11.2667 12.45 12.7333 12.45 13.8 11.65L20 7" stroke="#bf211b"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                  <rect x="3" y="5" width="18" height="14" rx="2" stroke="#bf211b" stroke-width="2"
+                    stroke-linecap="round"></rect>
+                </g>
+              </svg>
+            </div>
+            <span class="tag">Tema 5</span>
+          </div>
+
+          <h3>Elektronička pošta u poslovanju</h3>
+          <p>
+            Materijal uvodi učenike u poslovnu uporabu elektroničke pošte u programu Gmail te objašnjava kako otvoriti,
+            konfigurirati i sigurno koristiti e-mail račun. Kroz praktične primjere učenici uče postaviti dvofaktorsku
+            autentifikaciju, organizirati dolaznu poštu pomoću oznaka i filtara, sigurno slati privitke i velike
+            datoteke putem Google Drive poveznica te pisati jasne i profesionalne poslovne poruke.
+          </p>
+
+          <div class="highlights" aria-label="Ključne teme">
+            <span class="chip">Račun i sigurnost</span>
+            <span class="chip">Oznake, filtri, pretraživanje</span>
+            <span class="chip">Poslovni odgovor</span>
+            <span class="chip">Automatizacija</span>
+          </div>
+
+          <div class="cta-row">
+            <span class="cta">Otvori lekciju <span aria-hidden="true">→</span></span>
+            <span class="meta">Osnove rada sa Gmailom</span>
+          </div>
+        </a>
+
+        <a class="card card--green" href="./excel.html" target="_blank" rel="noopener noreferrer"
+          aria-label="Otvori materijal Programi za oblikovanje i obradu teksta – MS Excel">
+          <div class="card-top">
+            <div class="icon-wrap" aria-hidden="true">
+              <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                fill="#000000" width="34">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                  <defs>
+                    <linearGradient id="a" x1="4.494" y1="-2092.086" x2="13.832" y2="-2075.914"
+                      gradientTransform="translate(0 2100)" gradientUnits="userSpaceOnUse">
+                      <stop offset="0" stop-color="#18884f"></stop>
+                      <stop offset="0.5" stop-color="#117e43"></stop>
+                      <stop offset="1" stop-color="#0b6631"></stop>
+                    </linearGradient>
+                  </defs>
+                  <title>file_type_excel</title>
+                  <path
+                    d="M19.581,15.35,8.512,13.4V27.809A1.192,1.192,0,0,0,9.705,29h19.1A1.192,1.192,0,0,0,30,27.809h0V22.5Z"
+                    style="fill:#185c37"></path>
+                  <path d="M19.581,3H9.705A1.192,1.192,0,0,0,8.512,4.191h0V9.5L19.581,16l5.861,1.95L30,16V9.5Z"
+                    style="fill:#21a366"></path>
+                  <path d="M8.512,9.5H19.581V16H8.512Z" style="fill:#107c41"></path>
+                  <path d="M16.434,8.2H8.512V24.45h7.922a1.2,1.2,0,0,0,1.194-1.191V9.391A1.2,1.2,0,0,0,16.434,8.2Z"
+                    style="opacity:0.10000000149011612;isolation:isolate"></path>
+                  <path d="M15.783,8.85H8.512V25.1h7.271a1.2,1.2,0,0,0,1.194-1.191V10.041A1.2,1.2,0,0,0,15.783,8.85Z"
+                    style="opacity:0.20000000298023224;isolation:isolate"></path>
+                  <path d="M15.783,8.85H8.512V23.8h7.271a1.2,1.2,0,0,0,1.194-1.191V10.041A1.2,1.2,0,0,0,15.783,8.85Z"
+                    style="opacity:0.20000000298023224;isolation:isolate"></path>
+                  <path d="M15.132,8.85H8.512V23.8h6.62a1.2,1.2,0,0,0,1.194-1.191V10.041A1.2,1.2,0,0,0,15.132,8.85Z"
+                    style="opacity:0.20000000298023224;isolation:isolate"></path>
+                  <path
+                    d="M3.194,8.85H15.132a1.193,1.193,0,0,1,1.194,1.191V21.959a1.193,1.193,0,0,1-1.194,1.191H3.194A1.192,1.192,0,0,1,2,21.959V10.041A1.192,1.192,0,0,1,3.194,8.85Z"
+                    style="fill:#117e43"></path>
+                  <path
+                    d="M5.7,19.873l2.511-3.884-2.3-3.862H7.758L9.013,14.6c.116.234.2.408.238.524h.017c.082-.188.169-.369.26-.546l1.342-2.447h1.7l-2.359,3.84,2.419,3.905H10.821l-1.45-2.711A2.355,2.355,0,0,1,9.2,16.8H9.176a1.688,1.688,0,0,1-.168.351L7.515,19.873Z"
+                    style="fill:#fff"></path>
+                  <path d="M28.806,3H19.581V9.5H30V4.191A1.192,1.192,0,0,0,28.806,3Z" style="fill:#33c481"></path>
+                  <path d="M19.581,16H30v6.5H19.581Z" style="fill:#107c41"></path>
+                </g>
+              </svg>
+            </div>
+            <span class="tag">Tema 6</span>
+          </div>
+
+          <h3>Programi za izradu tabličnih proračuna – MS Excel </h3>
+          <p>
+            Materijal uvodi učenike u radno okruženje programa Microsoft Excel te objašnjava kako izraditi, urediti i
+            oblikovati proračunske tablice. Kroz primjere uče se pokretanje programa, rad sa sučeljem, unos i uređivanje
+            podataka, spremanje radnih knjiga te osnovno oblikovanje ćelija, redaka, stupaca, tablica, formula i
+            grafikona.
+          </p>
+
+          <div class="highlights" aria-label="Ključne teme">
+            <span class="chip">Sučelje i kartice</span>
+            <span class="chip">Ćelije i formati</span>
+            <span class="chip">Funkcije</span>
+            <span class="chip">Grafikoni</span>
+          </div>
+
+          <div class="cta-row">
+            <span class="cta">Otvori lekciju <span aria-hidden="true">→</span></span>
+            <span class="meta">Osnove rada u MS Excelu</span>
+          </div>
+        </a> -->
+
+      </div>
+    </section>
+
+    <!-- <section class="section" aria-labelledby="savjeti">
+      <div class="section-head">
+        <div>
+          <h2 id="savjeti">Savjeti za rad</h2>
+          <p>Kratke smjernice mogu pomoći da materijale iskoristite učinkovitije tijekom sata, kod kuće ili pri pripremi
+            za provjeru znanja.</p>
+        </div>
+      </div>
+
+      <div class="notes">
+        <article class="note">
+          <h3>Prije otvaranja lekcije</h3>
+          <ul>
+            <li>Pripremi bilježnicu ili digitalne bilješke.</li>
+            <li>Pročitaj naslov i pokušaj predvidjeti što ćeš naučiti.</li>
+            <li>Obrati pažnju na nove pojmove i primjere iz prakse.</li>
+          </ul>
+        </article>
+
+        <article class="note">
+          <h3>Nakon pregleda sadržaja</h3>
+          <ul>
+            <li>Zapiši tri najvažnije informacije koje si zapamtio.</li>
+            <li>Poveži gradivo s radom u servisu, dućanu ili komunikacijom s klijentima.</li>
+            <li>Vrati se na kartice kad trebaš brzo ponavljanje.</li>
+          </ul>
+        </article>
+      </div>
+    </section> -->
+
+    <footer class="footer">
+      <div class="container footer-box">
+        <p>Materijali izrađeni za borderless d.o.o.
+          <!-- <a href="https://ss-ban-jjelacic-zapresic.skole.hr/" target="_blank"
+            class="ssbjj">SŠBJJ</a> -->
+        </p>
+        <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+          data-name="bmc-button" data-slug="clockworks" data-color="#FFDD00" data-emoji="☕" data-font="Poppins"
+          data-text="Buy me coffee" data-outline-color="#000000" data-font-color="#000000"
+          data-coffee-color="#ffffff"></script>
+      </div>
+    </footer>
+  </main>
+</body>
+
+</html>

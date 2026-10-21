@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Web development HTML5</title>
+  <style>
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      background: #0b1220;
+      color: #e7edf8;
+      font: 18px/1.6 system-ui, sans-serif
+    }
+
+    header.top {
+      height: 70px;
+      border-bottom: 1px solid #2b3850;
+      padding: 12px 4vw;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #101b2d
+    }
+
+    button,
+    select {
+      font: inherit;
+      background: #21344e;
+      color: #fff;
+      border: 1px solid #536580;
+      border-radius: 9px;
+      padding: 8px 14px;
+      cursor: pointer
+    }
+
+    button:hover {
+      background: #315477
+    }
+
+    button:disabled {
+      opacity: .4;
+      cursor: default
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    select:focus-visible {
+      outline: 3px solid #71e1cf;
+      outline-offset: 3px
+    }
+
+    main {
+      max-width: 1150px;
+      margin: auto;
+      padding: 35px 35px 120px
+    }
+
+    .slide {
+      display: none
+    }
+
+    .slide.active {
+      display: block
+    }
+
+    h1 {
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.15;
+      margin: 10px 0 28px;
+      letter-spacing: -1px
+    }
+
+    h2 {
+      font-size: clamp(26px, 3.6vw, 46px);
+      line-height: 1.2;
+      color: #71e1cf
+    }
+
+    h3,
+    .h3 {
+      font-size: 1.17em;
+      color: #71e1cf
+    }
+
+    .eyebrow {
+      color: #71e1cf;
+      letter-spacing: 3px;
+      font-size: 14px
+    }
+
+    p,
+    li {
+      max-width: 950px
+    }
+
+    li {
+      margin: 10px 0
+    }
+
+    a {
+      color: #8cbbff
+    }
+
+    pre {
+      background: #070e19;
+      border: 1px solid #33435d;
+      border-radius: 14px;
+      padding: 22px;
+      overflow: auto;
+      font: 17px/1.6 ui-monospace, monospace;
+      color: #b8f5dc
+    }
+
+    code {
+      font-family: ui-monospace, monospace;
+      color: #b8f5dc
+    }
+
+    p code,
+    li code {
+      background: #17243b;
+      padding: 2px 5px;
+      border-radius: 4px
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 18px
+    }
+
+    article,
+    .callout {
+      background: #14233a;
+      border: 1px solid #344660;
+      border-radius: 15px;
+      padding: 20px
+    }
+
+    .callout {
+      border-left: 4px solid #71e1cf;
+      margin: 24px 0
+    }
+
+    .note {
+      color: #b0bfd5;
+      font-size: 16px
+    }
+
+    .chips {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap
+    }
+
+    .chips span {
+      border: 1px solid #52647f;
+      border-radius: 30px;
+      padding: 8px 16px
+    }
+
+    .bottom {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #101b2df5;
+      border-top: 1px solid #344660;
+      padding: 12px 4vw;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between
+    }
+
+    .progress {
+      height: 4px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      background: #71e1cf;
+      transition: width .2s
+    }
+
+    .lab {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px
+    }
+
+    textarea {
+      width: 100%;
+      height: 360px;
+      background: #070e19;
+      color: #c4f4de;
+      padding: 16px;
+      font: 15px/1.5 monospace;
+      border: 1px solid #536580;
+      border-radius: 9px
+    }
+
+    iframe {
+      width: 100%;
+      height: 360px;
+      background: white;
+      border: 1px solid #536580;
+      border-radius: 9px
+    }
+
+    .tools {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px
+    }
+
+    fieldset {
+      border: 1px solid #344660;
+      border-radius: 12px;
+      margin: 20px 0;
+      padding: 15px
+    }
+
+    .option {
+      display: block;
+      padding: 5px
+    }
+
+    .feedback {
+      color: #71e1cf;
+      font-size: 16px
+    }
+
+    select {
+      max-width: 58vw
+    }
+
+    .counter {
+      white-space: nowrap
+    }
+
+    @media(max-width:650px) {
+      main {
+        padding: 20px 18px 125px
+      }
+
+      .lab {
+        grid-template-columns: 1fr
+      }
+
+      header.top {
+        padding: 10px 18px;
+        font-size: 15px
+      }
+
+      .bottom {
+        padding: 10px 14px
+      }
+
+      button {
+        padding: 7px 10px;
+        font-size: 15px
+      }
+
+      pre {
+        font-size: 14px
+      }
+
+      .hint {
+        display: none
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+        color: #111;
+        font-size: 12pt
+      }
+
+      header.top,
+      .bottom,
+      .tools {
+        display: none
+      }
+
+      .slide {
+        display: block !important;
+        break-after: page
+      }
+
+      main {
+        padding: 0
+      }
+
+      pre,
+      article,
+      .callout {
+        background: #f4f5f7;
+        color: #111
+      }
+
+      code,
+      h2,
+      h3,
+      .note {
+        color: #234
+      }
+
+      a {
+        color: #234
+      }
+
+      textarea,
+      iframe {
+        height: 250px
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="top"><span>WEB / HTML</span><label><span class="hint">Sadržaj </span><select id="jump"
+        aria-label="Odaberi slajd">
+        <option value="0">01 — HTML: prva web-stranica</option>
+        <option value="1">02 — Što ćemo naučiti?</option>
+        <option value="2">03 — Što je HTML?</option>
+        <option value="3">04 — Oznaka ≠ element</option>
+        <option value="4">05 — Kostur HTML dokumenta</option>
+        <option value="5">06 — Head i body: dvije različite uloge</option>
+        <option value="6">07 — Prvi praktični korak</option>
+        <option value="7">08 — Naslovi i odlomci</option>
+        <option value="8">09 — Ugnježđivanje i isticanje</option>
+        <option value="9">10 — Atributi: dodatne informacije</option>
+        <option value="10">11 — Poveznice i putanje</option>
+        <option value="11">12 — Slike i alternativni tekst</option>
+        <option value="12">13 — Popisi: grupiranje sadržaja</option>
+        <option value="13">14 — Semantička struktura</option>
+        <option value="14">15 — Dodatno: prvi obrazac</option>
+        <option value="15">16 — Laboratorij: promijeni i provjeri</option>
+        <option value="16">17 — Samostalni zadatak: moja stranica</option>
+        <option value="17">18 — Prije predaje: testiraj</option>
+        <option value="18">19 — Kviz: provjeri razumijevanje</option>
+        <option value="19">20 — Sažetak i dokumentacija</option>
+      </select></label></header>
+  <main>
+    <section class="slide" aria-labelledby="t0">
+      <p class="eyebrow">HTML / 01</p>
+      <h1 id="t0">HTML: prva web-stranica</h1>
+      <p class="eyebrow">WEB DEVELOPMENT / TEMA 01</p>
+      <h2>Od prazne datoteke<br>do vlastite stranice.</h2>
+      <p>Upoznaj strukturu web-stranice, napiši HTML i odmah provjeri rezultat.</p>
+      <div class="chips"><span>Uvodna cjelina</span><span>Primjeri + praksa + kviz</span>
+      </div>
+    </section>
+    <section class="slide" aria-labelledby="t1">
+      <p class="eyebrow">HTML / 02</p>
+      <h1 id="t1">Što ćemo naučiti?</h1>
+      <ul>
+        <li>Objasniti čemu služi HTML.</li>
+        <li>Razlikovati oznaku, element i atribut.</li>
+        <li>Sastaviti osnovnu strukturu dokumenta.</li>
+        <li>Dodati naslove, odlomke, poveznice, slike i popise.</li>
+        <li>Izraditi jednostavnu osobnu stranicu i provjeriti rad.</li>
+      </ul>
+      <div class="callout">Početno pitanje: što ostaje od web-stranice kada uklonimo boje, animacije i ukrase?</div>
+    </section>
+    <section class="slide" aria-labelledby="t2">
+      <p class="eyebrow">HTML / 03</p>
+      <h1 id="t2">Što je HTML?</h1>
+      <h2>Jezik za označavanje sadržaja.</h2>
+      <p>HTML znači <em>HyperText Markup Language</em>. Opisuje strukturu web-stranice: što je naslov, odlomak ili
+        poveznica. Nije programski jezik za pisanje algoritama.</p>
+      <div class="grid">
+        <article>
+          <h3>HTML</h3>
+          <p>Sadržaj i struktura.</p>
+        </article>
+        <article>
+          <h3>CSS</h3>
+          <p>Izgled i raspored.</p>
+        </article>
+        <article>
+          <h3>JavaScript</h3>
+          <p>Ponašanje i interakcija.</p>
+        </article>
+      </div>
+      <p class="note">U ovoj cjelini pišemo HTML. Dizajn ove prezentacije koristi i CSS, a interaktivne aktivnosti
+        JavaScript.</p>
+    </section>
+    <section class="slide" aria-labelledby="t3">
+      <p class="eyebrow">HTML / 04</p>
+      <h1 id="t3">Oznaka ≠ element</h1>
+      <pre><code>&lt;p&gt;Učim izrađivati web-stranice.&lt;/p&gt;</code></pre>
+      <ul>
+        <li><code>&lt;p&gt;</code> — početna oznaka.</li>
+        <li>Tekst između oznaka — sadržaj.</li>
+        <li><code>&lt;/p&gt;</code> — završna oznaka.</li>
+        <li>Cijela prikazana cjelina — HTML element.</li>
+      </ul>
+      <p>Prazni elementi, poput <code>&lt;br&gt;</code> i <code>&lt;img&gt;</code>, nemaju završnu oznaku.</p>
+      <div class="callout">Probaj usmeno označiti početak, sadržaj i završetak elementa naslova.</div>
+    </section>
+    <section class="slide" aria-labelledby="t4">
+      <p class="eyebrow">HTML / 05</p>
+      <h1 id="t4">Kostur HTML dokumenta</h1>
+      <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang=&quot;hr&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;
+  &lt;title&gt;Moja prva stranica&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Pozdrav, svijete!&lt;/h1&gt;
+  &lt;p&gt;Ovo je moja prva HTML stranica.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+      <p class="note">Deklaracija <code>&lt;!DOCTYPE html&gt;</code> označava suvremeni HTML dokument.
+        <code>lang="hr"</code> označava hrvatski jezik.
+      </p>
+    </section>
+    <section class="slide" aria-labelledby="t5">
+      <p class="eyebrow">HTML / 06</p>
+      <h1 id="t5">Head i body: dvije različite uloge</h1>
+      <div class="grid">
+        <article>
+          <h2 class="h3">
+            &lt;head&gt;
+          </h2>
+          <p>Podaci o dokumentu.</p>
+          <ul>
+            <li><code>title</code>: naziv kartice preglednika.</li>
+            <li><code>charset="UTF-8"</code>: kodiranje znakova.</li>
+            <li><code>viewport</code>: postavka prikaza na mobilnim uređajima.</li>
+          </ul>
+        </article>
+        <article>
+          <h2 class="h3">
+
+            &lt;body&gt;
+          </h2>
+          <p>Sadržaj koji se prikazuje na stranici.</p>
+          <ul>
+            <li>Naslovi i tekst.</li>
+            <li>Slike i poveznice.</li>
+            <li>Popisi i obrasci.</li>
+          </ul>
+        </article>
+      </div>
+      <div class="callout">Pitanje: zašto promjena elementa title ne mijenja veliki naslov u sadržaju?</div>
+    </section>
+    <section class="slide" aria-labelledby="t6">
+      <p class="eyebrow">HTML / 07</p>
+      <h1 id="t6">Prvi praktični korak</h1>
+      <ol>
+        <li>Otvori uređivač teksta, primjerice VS Code.</li>
+        <li>Napravi mapu <code>moja-stranica</code>.</li>
+        <li>U njoj spremi dokument kao <code>index.html</code>.</li>
+        <li>Upiši kostur s prethodnog slajda.</li>
+        <li>Otvori datoteku u pregledniku.</li>
+        <li>Promijeni naslov, spremi datoteku i osvježi preglednik.</li>
+      </ol>
+      <div class="callout">Uspjeh: kartica preglednika ima tvoj naziv, a stranica prikazuje tvoj naslov i odlomak.</div>
+    </section>
+    <section class="slide" aria-labelledby="t7">
+      <p class="eyebrow">HTML / 08</p>
+      <h1 id="t7">Naslovi i odlomci</h1>
+      <pre><code>&lt;h1&gt;Moj projekt&lt;/h1&gt;
+&lt;h2&gt;O projektu&lt;/h2&gt;
+&lt;p&gt;Izrađujem svoju prvu web-stranicu.&lt;/p&gt;
+&lt;h2&gt;Što učim?&lt;/h2&gt;
+&lt;h3&gt;HTML elementi&lt;/h3&gt;
+&lt;p&gt;Učim označavati sadržaj.&lt;/p&gt;</code></pre>
+      <p>Naslovi imaju šest razina: <code>h1</code> do <code>h6</code>. Biraj ih prema hijerarhiji sadržaja, a ne samo
+        prema veličini slova.</p>
+      <p>Za ovu vježbu koristi jedan glavni <code>h1</code>, a cjeline označi s <code>h2</code>.</p>
+    </section>
+    <section class="slide" aria-labelledby="t8">
+      <p class="eyebrow">HTML / 09</p>
+      <h1 id="t8">Ugnježđivanje i isticanje</h1>
+      <pre><code>&lt;p&gt;HTML učimo &lt;strong&gt;praktičnim radom&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Ovo je &lt;em&gt;posebno naglašena&lt;/em&gt; riječ.&lt;/p&gt;
+&lt;!-- Ovaj komentar nije vidljiv na stranici. --&gt;</code></pre>
+      <p><code>strong</code> označava važnost, a <code>em</code> naglasak. Element unutar drugog elementa zatvori prije
+        vanjskog elementa.</p>
+      <pre><code>&lt;p&gt;Ispravno: &lt;strong&gt;važan tekst&lt;/strong&gt;.&lt;/p&gt;</code></pre>
+      <div class="callout">Pronađi pogrešku: <code>&lt;p&gt;&lt;strong&gt;Tekst&lt;/p&gt;&lt;/strong&gt;</code></div>
+    </section>
+    <section class="slide" aria-labelledby="t9">
+      <p class="eyebrow">HTML / 10</p>
+      <h1 id="t9">Atributi: dodatne informacije</h1>
+      <pre><code>&lt;a href=&quot;https://www.w3schools.com/html/&quot;&gt;Učimo HTML&lt;/a&gt;</code></pre>
+      <p>Atribut se piše u početnoj oznaci, najčešće kao <code>naziv="vrijednost"</code>. Ovdje <code>href</code>
+        određuje odredište poveznice.</p>
+      <ul>
+        <li><code>lang</code> — jezik dokumenta.</li>
+        <li><code>href</code> — odredište poveznice.</li>
+        <li><code>src</code> — putanja do resursa.</li>
+        <li><code>alt</code> — tekstualna alternativa slici.</li>
+        <li><code>id</code> — jedinstveni identifikator elementa u dokumentu.</li>
+      </ul>
+      <p class="note">Za dosljednost piši nazive malim slovima i vrijednosti stavljaj u navodnike.</p>
+    </section>
+    <section class="slide" aria-labelledby="t10">
+      <p class="eyebrow">HTML / 11</p>
+      <h1 id="t10">Poveznice i putanje</h1>
+      <pre><code>&lt;a href=&quot;https://www.w3schools.com/html/&quot;&gt;HTML dokumentacija&lt;/a&gt;
+&lt;a href=&quot;kontakt.html&quot;&gt;Kontakt&lt;/a&gt;
+&lt;a href=&quot;#hobi&quot;&gt;Moji hobiji&lt;/a&gt;
+
+&lt;h2 id=&quot;hobi&quot;&gt;Moji hobiji&lt;/h2&gt;</code></pre>
+      <ul>
+        <li>Apsolutna adresa uključuje protokol i domenu.</li>
+        <li>Relativna putanja upućuje na datoteku u odnosu na trenutačni dokument.</li>
+        <li><code>#hobi</code> vodi do elementa s odgovarajućim <code>id</code>.</li>
+      </ul>
+      <div class="callout">Koristi opisni tekst poveznice, primjerice „HTML dokumentacija”, umjesto „klikni ovdje”.
+      </div>
+    </section>
+    <section class="slide" aria-labelledby="t11">
+      <p class="eyebrow">HTML / 12</p>
+      <h1 id="t11">Slike i alternativni tekst</h1>
+      <pre><code>&lt;img src=&quot;slike/radionica.jpg&quot;
+     alt=&quot;Učenici spajaju elektronički sklop u radionici&quot;
+     width=&quot;600&quot; height=&quot;400&quot;&gt;</code></pre>
+      <p>Za ovaj primjer sliku spremi u podmapu <code>slike</code>. Naziv, nastavak i putanja moraju odgovarati stvarnoj
+        datoteci.</p>
+      <p><code>alt</code> prenosi smisao slike kada slika nije dostupna i korisnicima čitača zaslona. Za isključivo
+        dekorativnu sliku koristi se prazan <code>alt=""</code>.</p>
+      <div class="callout">Dijagnostika: ako slika ne radi, provjeri putanju, velika i mala slova te nastavak .jpg /
+        .png.</div>
+    </section>
+    <section class="slide" aria-labelledby="t12">
+      <p class="eyebrow">HTML / 13</p>
+      <h1 id="t12">Popisi: grupiranje sadržaja</h1>
+      <pre><code>&lt;h2&gt;Moji interesi&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Programiranje&lt;/li&gt;
+  &lt;li&gt;Računalne mreže&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Kako otvoriti stranicu?&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Spremi dokument.&lt;/li&gt;
+  &lt;li&gt;Otvori ga u pregledniku.&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+      <p><code>ul</code> je neuređeni popis, <code>ol</code> uređeni popis, a <code>li</code> pojedinačna stavka.</p>
+    </section>
+    <section class="slide" aria-labelledby="t13">
+      <p class="eyebrow">HTML / 14</p>
+      <h1 id="t13">Semantička struktura</h1>
+      <pre><code>&lt;header&gt;
+  &lt;h1&gt;Web-klub&lt;/h1&gt;
+&lt;/header&gt;
+&lt;nav&gt;&lt;a href=&quot;#o-nama&quot;&gt;O nama&lt;/a&gt;&lt;/nav&gt;
+&lt;main&gt;
+  &lt;section id=&quot;o-nama&quot;&gt;
+    &lt;h2&gt;O nama&lt;/h2&gt;
+    &lt;p&gt;Učimo izrađivati web-stranice.&lt;/p&gt;
+  &lt;/section&gt;
+&lt;/main&gt;
+&lt;footer&gt;&lt;p&gt;Projekt&lt;/p&gt;&lt;/footer&gt;</code></pre>
+      <p>Semantički elementi opisuju ulogu sadržaja: zaglavlje, navigaciju, glavni sadržaj, tematsku cjelinu i podnožje.
+        Sami po sebi ne stvaraju složen vizualni raspored.</p>
+    </section>
+    <section class="slide" aria-labelledby="t14">
+      <p class="eyebrow">HTML / 15</p>
+      <h1 id="t14">Dodatno: prvi obrazac</h1>
+      <pre><code>&lt;form action=&quot;/prijava&quot; method=&quot;post&quot;&gt;
+  &lt;label for=&quot;ime&quot;&gt;Ime:&lt;/label&gt;
+  &lt;input type=&quot;text&quot; id=&quot;ime&quot; name=&quot;ime&quot; required&gt;
+  &lt;button type=&quot;submit&quot;&gt;Prijavi se&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+      <ul>
+        <li><code>for</code> u oznaci <code>label</code> odgovara atributu <code>id</code> polja.</li>
+        <li><code>name</code> određuje naziv podatka koji se šalje.</li>
+        <li><code>required</code> označava obavezno polje.</li>
+      </ul>
+      <div class="callout">HTML stvara obrazac, ali ne obrađuje ni ne sprema podatke. Adresa /prijava je samo primjer:
+        potrebna je stvarna poslužiteljska obrada.</div>
+    </section>
+    <section class="slide" aria-labelledby="t15">
+      <p class="eyebrow">HTML / 16</p>
+      <h1 id="t15">Laboratorij: promijeni i provjeri</h1>
+      <p>Promijeni naslov, dodaj odlomak ili popis pa pritisni „Prikaži rezultat”. Prikaz je izoliran | skripte i slanje
+        obrazaca nisu dopušteni.</p>
+      <div class="lab">
+        <div><label for="editor">Tvoj HTML</label><textarea id="editor" spellcheck="false"></textarea>
+          <div class="tools"><button id="run">Prikaži rezultat</button><button id="reset">Vrati primjer</button><button
+              id="save">Preuzmi moj HTML</button></div>
+        </div>
+        <div>
+          <p style="margin: 0;">Rezultat u pregledniku</p><iframe id="preview" title="Rezultat HTML primjera"
+            sandbox=""></iframe>
+        </div>
+      </div>
+    </section>
+    <section class="slide" aria-labelledby="t16">
+      <p class="eyebrow">HTML / 17</p>
+      <h1 id="t16">Samostalni zadatak: moja stranica</h1>
+      <p>Izradi stranicu o sebi, projektu ili omiljenom hobiju. Predloženo vrijeme: 20 minuta.</p>
+      <ul>
+        <li>Ispravan kostur dokumenta, <code>lang="hr"</code>, UTF-8 i smislen <code>title</code>.</li>
+        <li>Jedan glavni naslov, barem dva podnaslova i dva odlomka.</li>
+        <li>Popis s najmanje tri stavke.</li>
+        <li>Poveznica s opisnim tekstom.</li>
+        <li>Vlastita slika ili slika koju smiješ koristiti, s odgovarajućim <code>alt</code> tekstom.</li>
+        <li>Uredna struktura s glavnim sadržajem i podnožjem.</li>
+      </ul>
+
+    </section>
+    <section class="slide" aria-labelledby="t17">
+      <p class="eyebrow">HTML / 18</p>
+      <h1 id="t17">Prije predaje: testiraj</h1>
+      <ol>
+        <li>Provjeri naziv kartice i glavni naslov — nisu isti element.</li>
+        <li>Otvori sve poveznice i provjeri sliku.</li>
+        <li>Provjeri zatvaranje i ugnježđivanje oznaka.</li>
+        <li>Prođi poveznicama tipkom Tab.</li>
+        <li>Suzi prozor i provjeri čitljivost.</li>
+        <li>Zamoli kolegu da prema kodu objasni strukturu stranice.</li>
+      </ol>
+      <div class="callout">Preglednik može prikazati i neispravan HTML. „Izgleda dobro” nije isto što i „kod je
+        ispravan”.</div>
+    </section>
+    <section class="slide" aria-labelledby="t18">
+      <p class="eyebrow">HTML / 19</p>
+      <h1 id="t18">Kviz: provjeri razumijevanje</h1>
+      <fieldset>
+        <legend>1. Što HTML prvenstveno opisuje?</legend><label class="option"><input type="radio" name="q0" value="0">
+          Strukturu sadržaja</label><label class="option"><input type="radio" name="q0" value="1"> Algoritme
+          obrade</label><label class="option"><input type="radio" name="q0" value="2"> Boje svih elemenata</label>
+        <p class="feedback" id="f0"></p>
+      </fieldset>
+      <fieldset>
+        <legend>2. Gdje se nalazi title?</legend><label class="option"><input type="radio" name="q1" value="0"> U
+          body</label><label class="option"><input type="radio" name="q1" value="1"> U head</label><label
+          class="option"><input type="radio" name="q1" value="2"> U img</label>
+        <p class="feedback" id="f1"></p>
+      </fieldset>
+      <fieldset>
+        <legend>3. Koji atribut određuje odredište poveznice?</legend><label class="option"><input type="radio"
+            name="q2" value="0"> src</label><label class="option"><input type="radio" name="q2" value="1">
+          alt</label><label class="option"><input type="radio" name="q2" value="2"> href</label>
+        <p class="feedback" id="f2"></p>
+      </fieldset>
+      <fieldset>
+        <legend>4. Koji primjer pravilno ugnježđuje elemente?</legend>
+        <label class="option"><input type="radio" name="q3" value="0">
+          &lt;p&gt;&lt;em&gt;Tekst&lt;/em&gt;&lt;/p&gt;
+        </label><label class="option"><input type="radio" name="q3" value="1">
+          &lt;p&gt;&lt;em&gt;Tekst&lt;/p&gt;&lt;/em&gt;
+        </label><label class="option"><input type="radio" name="q3" value="2">
+          &lt;p&gt;&lt;em&gt;Tekst&lt;/p&gt;
+        </label>
+        <p class="feedback" id="f3"></p>
+      </fieldset>
+      <fieldset>
+        <legend>5. Čemu služi alt?</legend><label class="option"><input type="radio" name="q4" value="0"> Dodavanju
+          animacije</label><label class="option"><input type="radio" name="q4" value="1"> Tekstualnoj alternativi
+          slike</label><label class="option"><input type="radio" name="q4" value="2"> Otvaranju kartice</label>
+        <p class="feedback" id="f4"></p>
+      </fieldset>
+      <fieldset>
+        <legend>6. Zašto je potreban name u polju obrasca?</legend><label class="option"><input type="radio" name="q5"
+            value="0"> Da naziv i vrijednost polja budu poslani</label><label class="option"><input type="radio"
+            name="q5" value="1"> Da tekst postane podebljan</label><label class="option"><input type="radio" name="q5"
+            value="2"> Da zamijeni form</label>
+        <p class="feedback" id="f5"></p>
+      </fieldset><button id="grade">Provjeri odgovore</button>
+      <p id="score" role="status"></p>
+    </section>
+    <section class="slide" aria-labelledby="t19">
+      <p class="eyebrow">HTML / 20</p>
+      <h1 id="t19">Sažetak i dokumentacija</h1>
+      <h2>Struktura prije ukrasa.</h2>
+      <p>HTML elementima označavamo sadržaj. Atributima dodajemo informacije. Ispravna struktura i jasna semantika
+        temelj su stranice koju poslije oblikujemo CSS-om.</p>
+      <div class="callout">Izlazna kartica: napiši razliku između elementa i atributa te jedan primjer svakoga.</div>
+      <h3>Dokumentacija za daljnji rad</h3>
+      <ul>
+        <li><a target="_blank" href="https://www.w3schools.com/html/default.asp">W3Schools — HTML Tutorial</a></li>
+        <li><a target="_blank" href="https://www.w3schools.com/html/html_intro.asp">HTML Introduction</a></li>
+        <li><a target="_blank" href="https://www.w3schools.com/html/html_attributes.asp">HTML Attributes</a></li>
+        <li><a target="_blank" href="https://www.w3schools.com/html/html_forms.asp">HTML Forms</a></li>
+      </ul>
+      <p class="note">Nastavni primjeri i aktivnosti. Sljedeća tema: CSS — izgled web-stranice.</p>
+    </section>
+  </main>
+  <nav class="bottom" aria-label="Navigacija prezentacije">
+    <div id="progress" class="progress"></div><button id="prev">← Prethodni</button><span id="count" class="counter"
+      aria-live="polite"></span><span class="hint">← → za navigaciju</span><button id="fullscreen">Cijeli
+      zaslon</button><button id="next">Sljedeći →</button>
+  </nav>
+  <script>const slides = [...document.querySelectorAll('.slide')]; const jump = document.getElementById('jump'); let n = 0;
+    function show(i) {n = Math.max(0, Math.min(slides.length - 1, i)); slides.forEach((s, j) => {s.classList.toggle('active', j === n); s.inert = j !== n}); jump.value = n; document.getElementById('count').textContent = `${n + 1} / ${slides.length}`; document.getElementById('progress').style.width = ((n + 1) / slides.length * 100) + '%'; document.getElementById('prev').disabled = n === 0; document.getElementById('next').disabled = n === slides.length - 1; window.scrollTo(0, 0); location.hash = 'slide-' + (n + 1)}
+    document.getElementById('prev').onclick = () => show(n - 1); document.getElementById('next').onclick = () => show(n + 1); jump.onchange = () => show(+jump.value);
+    document.addEventListener('keydown', e => {if (e.target.closest('textarea,input,select,button,a')) return; if (e.key === 'ArrowRight') {e.preventDefault(); show(n + 1)} if (e.key === 'ArrowLeft') {e.preventDefault(); show(n - 1)} });
+    document.getElementById('fullscreen').onclick = async () => {try {if (!document.fullscreenElement) await document.documentElement.requestFullscreen(); else await document.exitFullscreen()} catch (e) {document.getElementById('fullscreen').textContent = 'Použi F11'} };
+    const editor = document.getElementById('editor'); const initial = "<!DOCTYPE html>\n<html lang=\"hr\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Moja prva stranica</title>\n</head>\n<body>\n  <h1>Pozdrav, svijete!</h1>\n  <p>Ovo je moja prva HTML stranica.</p>\n</body>\n</html>"; editor.value = initial; const render = () => document.getElementById('preview').srcdoc = editor.value; document.getElementById('run').onclick = render; document.getElementById('reset').onclick = () => {editor.value = initial; render()}; document.getElementById('save').onclick = () => {const u = URL.createObjectURL(new Blob([editor.value], {type: 'text/html;charset=utf-8'})); const a = document.createElement('a'); a.href = u; a.download = 'moja-stranica.html'; a.click(); setTimeout(() => URL.revokeObjectURL(u), 1000)}; render();
+    const answers = [["Što HTML prvenstveno opisuje?", ["Strukturu sadržaja", "Algoritme obrade", "Boje svih elemenata"], 0, "HTML označava strukturu i značenje sadržaja."], ["Gdje se nalazi title?", ["U body", "U head", "U img"], 1, "Title je u head dijelu i određuje naziv kartice."], ["Koji atribut određuje odredište poveznice?", ["src", "alt", "href"], 2, "Href u elementu a određuje odredište."], ["Koji primjer pravilno ugnježđuje elemente?", ["<p><em>Tekst</em></p>", "<p><em>Tekst</p></em>", "<p><em>Tekst</p>"], 0, "Unutarnji element zatvaramo prije vanjskog."], ["Čemu služi alt?", ["Dodavanju animacije", "Tekstualnoj alternativi slike", "Otvaranju kartice"], 1, "Alt prenosi smisao slike kada slika nije dostupna ili se koristi čitač zaslona."], ["Zašto je potreban name u polju obrasca?", ["Da naziv i vrijednost polja budu poslani", "Da tekst postane podebljan", "Da zamijeni form"], 0, "Name određuje naziv poslanog podatka."]]; document.getElementById('grade').onclick = () => {let score = 0; answers.forEach((q, i) => {const selected = document.querySelector(`input[name="q${i}"]:checked`); const ok = selected && +selected.value === q[2]; if (ok) score++; document.getElementById('f' + i).textContent = (ok ? 'Točno. ' : selected ? 'Netočno. ' : 'Odaberi odgovor. ') + q[3]}); document.getElementById('score').textContent = `Rezultat: ${score} / ${answers.length}`}; const start = parseInt(location.hash.replace('#slide-', '')) - 1; show(Number.isFinite(start) ? start : 0);
+  </script>
+</body>
+
+</html>
